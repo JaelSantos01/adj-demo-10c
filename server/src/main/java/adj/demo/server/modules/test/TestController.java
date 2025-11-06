@@ -1,4 +1,4 @@
-package adj.demo.server.test;
+package adj.demo.server.modules.test;
 
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;

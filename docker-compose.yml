@@ -45,7 +45,7 @@ services:
       DB_PORT: 3306
       DB_NAME: adj-demo
       DB_USER: root
-      DB:PASS: root
+      DB_PASS: root
     ports:
       - "8081:8080"
     networks:

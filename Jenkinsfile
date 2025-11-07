@@ -1,19 +1,19 @@
-pipeline{
-    agent any 
+pipeline {
+    agent any
 
-    stages{
-        //Etapa para parar todos los servicios 
-        stage('Parando los servicios'){
-            steps{
+    stages {
+        // Parar los servicios que ya existen o en todo caso hacer caso omiso
+        stage('Parando los servicios...') {
+            steps {
                 bat '''
                     docker compose -p adj-demo down || exit /b 0
                 '''
             }
         }
 
-        // Etapa para eliminar las imagenes anteriores
-        stage('Borrando imágenes antiguas'){
-            steps{
+        // Eliminar las imágenes creadas por ese proyecto
+        stage('Eliminando imágenes anteriores...') {
+            steps {
                 bat '''
                     for /f "tokens=*" %%i in ('docker images --filter "label=com.docker.compose.project=adj-demo" -q') do (
                         docker rmi -f %%i
@@ -27,15 +27,15 @@ pipeline{
             }
         }
 
-        //Bajar la actualización
-        stage('Actualizando....'){
-            steps{
+        // Del recurso SCM configurado en el job, jala el repo
+        stage('Obteniendo actualización...') {
+            steps {
                 checkout scm
             }
         }
 
-        //Levantar y desplegar el proyecto
-         stage('Construyendo y desplegando servicios...') {
+        // Construir y levantar los servicios
+        stage('Construyendo y desplegando servicios...') {
             steps {
                 bat '''
                     docker compose up --build -d
@@ -44,18 +44,18 @@ pipeline{
         }
     }
 
-    post{
-        success{
-            echo 'Pipeline ejecutado exitosamente'
+    post {
+        success {
+            echo 'Pipeline ejecutado con éxito'
         }
 
-        failure{
-            echo 'Error al ejecutar el pipeline'
+        failure {
+            echo 'Hubo un error al ejecutar el pipeline'
         }
 
-        always{
+        always {
             echo 'Pipeline finalizado'
         }
     }
-
 }
+

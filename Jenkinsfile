@@ -5,8 +5,8 @@ pipeline{
         //Etapa para parar todos los servicios 
         stage('Parando los servicios'){
             steps{
-                sh '''
-                    docker compose -p adj-demo down || true
+                bat '''
+                    docker compose -p adj-demo down || exit /b 0
                 '''
             }
         }
@@ -14,13 +14,15 @@ pipeline{
         // Etapa para eliminar las imagenes anteriores
         stage('Borrando imágenes antiguas'){
             steps{
-                sh '''
-                    IMAGES=$(docker images --filter "label=com.docker.compose.project=adj-demo" -q)
-                    if [ -n '$IMAGES' ]; then
-                        docker images rmi -f $IMAGES
-                    else
-                        echo "No hay imágenes por borrar..."
-                    fi
+                bat '''
+                    for /f "tokens=*" %%i in ('docker images --filter "label=com.docker.compose.project=adj-demo" -q') do (
+                        docker rmi -f %%i
+                    )
+                    if errorlevel 1 (
+                        echo No hay imagenes por eliminar
+                    ) else (
+                        echo Imagenes eliminadas correctamente
+                    )
                 '''
             }
         }
@@ -33,9 +35,9 @@ pipeline{
         }
 
         //Levantar y desplegar el proyecto
-        stage('Construyendo y desplegando...'){
-            steps{
-                sh '''
+         stage('Construyendo y desplegando servicios...') {
+            steps {
+                bat '''
                     docker compose up --build -d
                 '''
             }

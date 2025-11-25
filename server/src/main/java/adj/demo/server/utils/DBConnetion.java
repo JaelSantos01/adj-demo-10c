@@ -23,7 +23,7 @@ public class DBConnetion {
 
     @Value("${db.pass}")
     private String pass;
-
+    
     @Bean
     public DataSource getDBConnection() {
         DriverManagerDataSource source = new DriverManagerDataSource();

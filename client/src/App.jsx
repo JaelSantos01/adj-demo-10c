@@ -15,12 +15,12 @@ function App() {
             </ul>
           </div>
         </div>
-      </nav>
+      </nav>  
 
       <div className="container mt-m">
         <h2>Inicio</h2>
         <hr />
-        <button onClick={() => TestController.callToAPI()} className="btn btn-sucess">Llamar a mi API</button>
+        <button onClick={() => TestController.callToAPI()} className="btn btn-success">Llamar a mi API</button>
       </div>
     </>
   )

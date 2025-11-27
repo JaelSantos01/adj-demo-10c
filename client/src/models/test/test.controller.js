@@ -7,7 +7,8 @@ TestController.callToAPI = async () => {
     await fetch(`${API_URL}/test`, { //
         method: 'GET',
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         }
     }).then(res => res.json()).then(res => {
             console.log(res);
